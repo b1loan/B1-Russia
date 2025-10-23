@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Membership Fee · B1 RUSSIA</title><link rel="stylesheet" href="assets/style.css" /></head>
+<body>
+<div class="bg-anim" id="bg-anim"></div>
+
+<header class="site-header">
+  <div class="brand">
+    <img src="https://raw.githubusercontent.com/b1loan/B1-Russia/1d243a16ea137a7f848ac13b33502d814293cfd1/9E8563FD-308D-4E3B-96F4-86B831BAD402.png" alt="B1 Logo" class="logo" />
+    <div class="titles">
+      <h1>B1 RUSSIA</h1>
+      <p class="tag">LHL ONLINE LENDING, INC — Philippine Based</p>
+    </div>
+  </div>
+  <nav class="main-nav">
+    <a href="about.html">ABOUT US</a>
+    <a href="dashboard.html">DASHBOARD</a>
+    <a href="contact.html">CONTACT US</a>
+  </nav>
+</header>
+
+<main class="container glass">
+  <h2>Membership Fee</h2>
+  <p>2 Year Member Fee (₱699)</p>
+  <div class="qr-block">
+    <img src="https://raw.githubusercontent.com/b1loan/B1-Russia/1d243a16ea137a7f848ac13b33502d814293cfd1/IMG_0096.jpeg" alt="QR Code" class="qr" />
+    <p>Scan or use the QR to pay. Upload proof below.</p>
+  </div>
+  <form id="membershipForm" onsubmit="return false" class="stack">
+    <label>Upload proof (jpeg)<input type="file" accept="image/*" id="proof" required /></label>
+    <div class="hint">Verification will begin after you click 'Verify'. The 48-hour verification countdown will START 5 minutes after verification is initiated.</div>
+    <div class="actions">
+      <button id="verifyBtn" class="btn">Verify (start process)</button>
+      <a class="btn" id="proceedCalc" href="calc.html">Proceed (after verification)</a>
+    </div>
+    <div id="timers" style="margin-top:10px;"></div>
+  </form>
+</main>
+
+<footer class="site-footer">
+  <div>© B1 Group · LHL ONLINE LENDING, INC · CS201916699 · Certificate No.3119</div>
+  <div class="small">Unit D5 Echelon Tower 2100 A Mabini St. Malate Manila · help@b1loan.com · +09666511466 / +09397195157</div>
+</footer>
+
+<script src="assets/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  const verifyBtn = document.getElementById('verifyBtn');
+  const timers = document.getElementById('timers');
+  let verifyStarted = false;
+  verifyBtn.addEventListener('click', ()=>{
+    if(!document.getElementById('proof').files.length){
+      alert('Please upload proof image before verifying.');
+      return;
+    }
+    if(verifyStarted) return;
+    verifyStarted = true;
+    verifyBtn.textContent = 'Verification scheduled (5m)';
+    const startAt = Date.now() + 5*60*1000;
+    timers.innerHTML = '<div>Verification will begin in <span id="t5">5:00</span> minutes.</div>';
+    let t5El = document.getElementById('t5');
+    let t5Timer = setInterval(()=>{
+      const rem = Math.max(0, startAt - Date.now());
+      const mm = Math.floor(rem/60000); const ss = Math.floor((rem%60000)/1000).toString().padStart(2,'0');
+      t5El.textContent = mm + ':' + ss;
+      if(rem<=0){
+        clearInterval(t5Timer);
+        const end = Date.now() + 48*60*60*1000;
+        timers.innerHTML = '<div>Verification started. Time remaining: <span id="t48"></span></div>';
+        let t48 = document.getElementById('t48');
+        let t48Timer = setInterval(()=>{
+          const r = Math.max(0, end - Date.now());
+          const days = Math.floor(r/(24*3600*1000));
+          const hrs = Math.floor((r%(24*3600*1000))/(3600*1000));
+          const mins = Math.floor((r%(3600*1000))/(60000));
+          const secs = Math.floor((r%60000)/1000).toString().padStart(2,'0');
+          t48.textContent = days + 'd ' + hrs + 'h ' + mins + 'm ' + secs + 's';
+          if(r<=0) clearInterval(t48Timer);
+        }, 1000);
+      }
+    },1000);
+  });
+});
+</script>
+</body>
+</html>

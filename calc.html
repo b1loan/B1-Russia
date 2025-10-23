@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Monthly Payment · B1 RUSSIA</title><link rel="stylesheet" href="assets/style.css" /></head>
+<body>
+<div class="bg-anim" id="bg-anim"></div>
+
+<header class="site-header">
+  <div class="brand">
+    <img src="https://raw.githubusercontent.com/b1loan/B1-Russia/1d243a16ea137a7f848ac13b33502d814293cfd1/9E8563FD-308D-4E3B-96F4-86B831BAD402.png" alt="B1 Logo" class="logo" />
+    <div class="titles">
+      <h1>B1 RUSSIA</h1>
+      <p class="tag">LHL ONLINE LENDING, INC — Philippine Based</p>
+    </div>
+  </div>
+  <nav class="main-nav">
+    <a href="about.html">ABOUT US</a>
+    <a href="dashboard.html">DASHBOARD</a>
+    <a href="contact.html">CONTACT US</a>
+  </nav>
+</header>
+
+<main class="container glass">
+  <h2>Monthly Payment Calculation</h2>
+  <div id="summary" class="stack"></div>
+  <div class="actions">
+    <button id="proceedBorrow" class="btn">Proceed Borrow</button>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div>© B1 Group · LHL ONLINE LENDING, INC · CS201916699 · Certificate No.3119</div>
+  <div class="small">Unit D5 Echelon Tower 2100 A Mabini St. Malate Manila · help@b1loan.com · +09666511466 / +09397195157</div>
+</footer>
+
+<script src="assets/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  const summary = document.getElementById('summary');
+  const amt = Number(localStorage.getItem('selectedLoan')||0);
+  if(!amt){
+    summary.innerHTML = '<div class="alert">No loan amount selected. Please go back to Loan Now page.</div>';
+    return;
+  }
+  const rate = 0.03; // 3% per month
+  const months = 12;
+  const monthlyInterest = rate * amt;
+  const monthlyPrincipal = amt / months;
+  const monthlyPayment = monthlyPrincipal + monthlyInterest;
+  summary.innerHTML = '\n    <div><strong>Borrow up to:</strong> ₱' + amt.toLocaleString() + '</div>\n    <div><strong>Term:</strong> ' + months + ' months</div>\n    <div><strong>Monthly interest:</strong> 3% (₱' + monthlyInterest.toFixed(2) + ')</div>\n    <div><strong>Monthly payment estimate:</strong> ₱' + monthlyPayment.toFixed(2) + '</div>\n  ';
+  document.getElementById('proceedBorrow').addEventListener('click', ()=>{
+    if(confirm('Are you sure you want to borrow ₱' + amt.toLocaleString() + '?')){
+      localStorage.setItem('applicationStatus','submitted');
+      localStorage.setItem('applicationSubmittedAt', Date.now());
+      window.location.href='review.html';
+    }
+  });
+});
+</script>
+</body>
+</html>

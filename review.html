@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Reviewing Application · B1 RUSSIA</title><link rel="stylesheet" href="assets/style.css" /></head>
+<body>
+<div class="bg-anim" id="bg-anim"></div>
+
+<header class="site-header">
+  <div class="brand">
+    <img src="https://raw.githubusercontent.com/b1loan/B1-Russia/1d243a16ea137a7f848ac13b33502d814293cfd1/9E8563FD-308D-4E3B-96F4-86B831BAD402.png" alt="B1 Logo" class="logo" />
+    <div class="titles">
+      <h1>B1 RUSSIA</h1>
+      <p class="tag">LHL ONLINE LENDING, INC — Philippine Based</p>
+    </div>
+  </div>
+  <nav class="main-nav">
+    <a href="about.html">ABOUT US</a>
+    <a href="dashboard.html">DASHBOARD</a>
+    <a href="contact.html">CONTACT US</a>
+  </nav>
+</header>
+
+<main class="container glass">
+  <h2>Reviewing Application</h2>
+  <p>Your application is under review. Timer below counts 72 hours from submission.</p>
+  <div id="reviewTimer" class="big"></div>
+  <div class="stack">
+    <a class="btn" href="dashboard.html">Go to Dashboard</a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div>© B1 Group · LHL ONLINE LENDING, INC · CS201916699 · Certificate No.3119</div>
+  <div class="small">Unit D5 Echelon Tower 2100 A Mabini St. Malate Manila · help@b1loan.com · +09666511466 / +09397195157</div>
+</footer>
+
+<script src="assets/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  const timerEl = document.getElementById('reviewTimer');
+  const submitted = Number(localStorage.getItem('applicationSubmittedAt') || 0);
+  const start = submitted || Date.now();
+  const end = start + 72*3600*1000;
+  const t = setInterval(()=>{
+    const rem = Math.max(0, end - Date.now());
+    const days = Math.floor(rem/(24*3600*1000));
+    const hrs = Math.floor((rem%(24*3600*1000))/(3600*1000));
+    const mins = Math.floor((rem%(3600*1000))/(60000));
+    const secs = Math.floor((rem%60000)/1000).toString().padStart(2,'0');
+    timerEl.textContent = days + 'd ' + hrs + 'h ' + mins + 'm ' + secs + 's';
+    if(rem<=0) clearInterval(t);
+  }, 1000);
+});
+</script>
+</body>
+</html>
